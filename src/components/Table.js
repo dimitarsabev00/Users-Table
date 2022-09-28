@@ -1,42 +1,44 @@
-import { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import "./Table.css";
 import styled from "@emotion/styled";
 import users_data from "./users_data.json";
-import { useTable } from "react-table";
-import { COLUMNS } from "./columns";
 const Table = () => {
-  const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => users_data, []);
-  const tableInstance = useTable({
-    columns,
-    data,
-  });
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    setUsers(users_data);
+  }, []);
 
-  const { getTableBodyProps, getTableProps, headerGroups, rows, prepareRow } =
-    tableInstance;
   return (
     <div className="table" style={{ textAlign: "center" }}>
       <h1>Users Table</h1>
-      <table {...getTableProps()}>
+      <table>
         <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
-            </tr>
-          ))}
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
         </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
+        <tbody>
+          {users.map((user) => {
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.first_name}</td>
+                <td>{user.last_name}</td>
+                <td>{user.email}</td>
+                <td
+                  style={{
+                    display: "flex",
+                    gap: "1rem",
+                    justifyContent: "center",
+                  }}
+                >
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </td>
               </tr>
             );
           })}
