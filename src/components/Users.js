@@ -66,22 +66,22 @@ const Users = ({ users, setUsers }) => {
       <thead>
         <tr>
           <td onClick={sortedByID}>
-            <span>ID</span>
+            <span style={{ marginRight: "10px" }}>ID</span>
 
             {sorted.sorted === "id" ? renderArrow() : null}
           </td>
           <td onClick={sortByFirstName}>
-            <span>First Name</span>
+            <span style={{ marginRight: "10px" }}>First Name</span>
 
             {sorted.sorted === "first_name" ? renderArrow() : null}
           </td>
           <td onClick={sortByLastName}>
-            <span>Last Name</span>
+            <span style={{ marginRight: "10px" }}>Last Name</span>
 
             {sorted.sorted === "last_name" ? renderArrow() : null}
           </td>
           <td onClick={sortByEmail}>
-            <span>Email</span>
+            <span style={{ marginRight: "10px" }}>Email</span>
 
             {sorted.sorted === "email" ? renderArrow() : null}
           </td>
