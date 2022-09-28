@@ -1,6 +1,6 @@
-import Table from "./components/Table";
+import AppContainer from "./components/AppContainer";
 function App() {
-  return <Table />;
+  return <AppContainer />;
 }
 
 export default App;

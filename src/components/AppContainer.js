@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import "./Table.css";
+import React, { useState } from "react";
+import "./AppContainer.css";
 import styled from "@emotion/styled";
-import users_data from "./users_data.json";
+import users_data from "../data/users_data.json";
 import Users from "./Users";
 import Pagination from "./Pagination";
-const Table = () => {
+const AppContainer = () => {
   const [users, setUsers] = useState(users_data);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(10);
@@ -26,4 +26,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default AppContainer;
