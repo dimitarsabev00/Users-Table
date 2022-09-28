@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 const Users = ({ users, setUsers }) => {
@@ -61,8 +62,15 @@ const Users = ({ users, setUsers }) => {
     }
     return <FaArrowDown />;
   };
+  const Table = styled.table`
+    border-collapse: collapse;
+    max-width: 900px;
+    width: 100%;
+    margin: 2rem auto;
+  `;
+
   return (
-    <table>
+    <Table>
       <thead>
         <tr>
           <td onClick={sortedByID}>
@@ -112,7 +120,7 @@ const Users = ({ users, setUsers }) => {
           );
         })}
       </tbody>
-    </table>
+    </Table>
   );
 };
 
