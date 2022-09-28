@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 const Users = ({ users, setUsers }) => {
   const [sorted, setSorted] = useState({ sorted: "id", reversed: "false" });
   const sortedByID = () => {
@@ -25,7 +25,7 @@ const Users = ({ users, setUsers }) => {
       return firstNameA.localeCompare(firstNameB);
     });
     setUsers(usersCopy);
-    setSorted({ sorted: "name", reversed: !sorted.reversed });
+    setSorted({ sorted: "first_name", reversed: !sorted.reversed });
   };
 
   const sortByLastName = () => {
@@ -39,7 +39,7 @@ const Users = ({ users, setUsers }) => {
       return lastNameA.localeCompare(lastNameB);
     });
     setUsers(usersCopy);
-    setSorted({ sorted: "name", reversed: !sorted.reversed });
+    setSorted({ sorted: "last_name", reversed: !sorted.reversed });
   };
   const sortByEmail = () => {
     const usersCopy = [...users];
@@ -52,16 +52,39 @@ const Users = ({ users, setUsers }) => {
       return emailA.localeCompare(emailB);
     });
     setUsers(usersCopy);
-    setSorted({ sorted: "name", reversed: !sorted.reversed });
+    setSorted({ sorted: "email", reversed: !sorted.reversed });
+  };
+
+  const renderArrow = () => {
+    if (sorted.reversed) {
+      return <FaArrowUp />;
+    }
+    return <FaArrowDown />;
   };
   return (
     <table>
       <thead>
         <tr>
-          <td onClick={sortedByID}>ID</td>
-          <td onClick={sortByFirstName}>First Name</td>
-          <td onClick={sortByLastName}>Last Name</td>
-          <td onClick={sortByEmail}>Email</td>
+          <td onClick={sortedByID}>
+            <span>ID</span>
+
+            {sorted.sorted === "id" ? renderArrow() : null}
+          </td>
+          <td onClick={sortByFirstName}>
+            <span>First Name</span>
+
+            {sorted.sorted === "first_name" ? renderArrow() : null}
+          </td>
+          <td onClick={sortByLastName}>
+            <span>Last Name</span>
+
+            {sorted.sorted === "last_name" ? renderArrow() : null}
+          </td>
+          <td onClick={sortByEmail}>
+            <span>Email</span>
+
+            {sorted.sorted === "email" ? renderArrow() : null}
+          </td>
           <td>Actions</td>
         </tr>
       </thead>
