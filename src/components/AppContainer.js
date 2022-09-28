@@ -13,8 +13,6 @@ const AppContainer = () => {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   const search = (e) => {
     const matchedUser = users_data.filter((user) => {
       return `${user.first_name} ${user.last_name} ${user.id} ${user.email}`
@@ -40,7 +38,8 @@ const AppContainer = () => {
       <Pagination
         usersPerPage={usersPerPage}
         totalUsers={users.length}
-        paginate={paginate}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
       />
     </div>
   );
