@@ -23,8 +23,14 @@ const AppContainer = () => {
     setUsers(matchedUser);
     setSearchPhrase(e.target.value);
   };
+
+  const PageWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `;
   return (
-    <div className="table" style={{ textAlign: "center" }}>
+    <PageWrapper>
       <h1>Users Table</h1>
       <div>
         <input
@@ -41,7 +47,7 @@ const AppContainer = () => {
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
       />
-    </div>
+    </PageWrapper>
   );
 };
 
