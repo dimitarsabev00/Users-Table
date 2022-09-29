@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./AppContainer.css";
 import styled from "@emotion/styled";
-import users_data from "../data/users_data.json";
-import Users from "./Users";
-import Pagination from "./Pagination";
+import users_data from "../../data/users_data.json";
+import Users from "../../components/Users";
+import Pagination from "../../components/Pagination";
 const AppContainer = () => {
   const [users, setUsers] = useState(users_data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,14 +23,8 @@ const AppContainer = () => {
     setUsers(matchedUser);
     setSearchPhrase(e.target.value);
   };
-
-  const PageWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `;
   return (
-    <PageWrapper>
+    <div style={{ textAlign: "center" }}>
       <h1>Users Table</h1>
       <div>
         <input
@@ -47,7 +41,7 @@ const AppContainer = () => {
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
       />
-    </PageWrapper>
+    </div>
   );
 };
 
