@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import "./AppContainer.css";
+import "./HomePage.css";
 import styled from "@emotion/styled";
 import users_data from "../../data/users_data.json";
-import Users from "../../components/Users";
+import Table from "../../components/Table";
 import Pagination from "../../components/Pagination";
-const AppContainer = () => {
+import Header from "../../components/Header";
+const HomePage = () => {
   const [users, setUsers] = useState(users_data);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(10);
@@ -23,18 +24,26 @@ const AppContainer = () => {
     setUsers(matchedUser);
     setSearchPhrase(e.target.value);
   };
+
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1>Users Table</h1>
-      <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        margin: "0 auto",
+        width: "70%",
+      }}
+    >
+      <Header />
+      {/* <div>
         <input
           type="text"
           placeholder="Search.."
           value={searchPhrase}
           onChange={search}
         />
-      </div>
-      <Users users={currentUsers} setUsers={setUsers} />
+      </div> */}
+      <Table users={currentUsers} setUsers={setUsers} />
       <Pagination
         usersPerPage={usersPerPage}
         totalUsers={users.length}
@@ -45,4 +54,4 @@ const AppContainer = () => {
   );
 };
 
-export default AppContainer;
+export default HomePage;
