@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
-const Users = ({ users, setUsers }) => {
+const Table = ({ users, setUsers }) => {
   const [sorted, setSorted] = useState({ sorted: "id", reversed: "false" });
   const sortedByID = () => {
     setSorted({ sorted: "id", reversed: !sorted.reversed });
@@ -64,32 +64,56 @@ const Users = ({ users, setUsers }) => {
   };
   const Table = styled.table`
     border-collapse: collapse;
-    max-width: 900px;
     width: 100%;
-    margin: 2rem auto;
+    margin: 2rem 0;
   `;
-
+  const Span = styled.span`
+    margin-right: 0.5rem;
+  `;
   return (
     <Table>
       <thead>
         <tr>
+          <td style={{ border: "none" }}>
+            <input placeholder="Filter By ID" style={{ width: "100%" }}></input>
+          </td>
+          <td style={{ border: "none" }}>
+            <input
+              placeholder="Filter By First Name"
+              style={{ width: "100%" }}
+            ></input>
+          </td>
+          <td style={{ border: "none" }}>
+            <input
+              placeholder="Filter By Last Name"
+              style={{ width: "100%" }}
+            ></input>
+          </td>
+          <td style={{ border: "none" }}>
+            <input
+              placeholder="Filter By Email"
+              style={{ width: "100%" }}
+            ></input>
+          </td>
+        </tr>
+        <tr>
           <td onClick={sortedByID}>
-            <span style={{ marginRight: "10px" }}>ID</span>
+            <Span>ID</Span>
 
             {sorted.sorted === "id" ? renderArrow() : null}
           </td>
           <td onClick={sortByFirstName}>
-            <span style={{ marginRight: "10px" }}>First Name</span>
+            <Span>First Name</Span>
 
             {sorted.sorted === "first_name" ? renderArrow() : null}
           </td>
           <td onClick={sortByLastName}>
-            <span style={{ marginRight: "10px" }}>Last Name</span>
+            <Span>Last Name</Span>
 
             {sorted.sorted === "last_name" ? renderArrow() : null}
           </td>
           <td onClick={sortByEmail}>
-            <span style={{ marginRight: "10px" }}>Email</span>
+            <Span>Email</Span>
 
             {sorted.sorted === "email" ? renderArrow() : null}
           </td>
@@ -124,4 +148,4 @@ const Users = ({ users, setUsers }) => {
   );
 };
 
-export default Users;
+export default Table;
