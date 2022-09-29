@@ -1,7 +1,24 @@
 import styled from "@emotion/styled";
-import React from "react";
-
+import React, { useState } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../configs/firebase";
+import { useNavigate } from "react-router-dom";
 const CreateUser = () => {
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const usersCollectionRef = collection(db, "users");
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await addDoc(usersCollectionRef, {
+      firstName: "Ivan",
+      lastName: "ivanov",
+      email: "ivan.ivanov@abv.bg",
+      status: "active",
+    });
+    navigate("/");
+  };
   const Form = styled.form`
     display: flex;
     flex-direction: column;
@@ -44,9 +61,6 @@ const CreateUser = () => {
   `;
   const Heading = styled.h2``;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
