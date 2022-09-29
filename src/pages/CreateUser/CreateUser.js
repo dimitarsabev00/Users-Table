@@ -12,9 +12,9 @@ const CreateUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await addDoc(usersCollectionRef, {
-      firstName: "Ivan",
-      lastName: "ivanov",
-      email: "ivan.ivanov@abv.bg",
+      firstName,
+      lastName,
+      email,
       status: "active",
     });
     navigate("/");
@@ -65,9 +65,30 @@ const CreateUser = () => {
     <Container>
       <Form onSubmit={handleSubmit}>
         <Heading>Create User</Heading>
-        <Input type="text" placeholder="First Name" />
-        <Input type="text" placeholder="Last Name" />
-        <Input type="email" placeholder="Email" />
+        <Input
+          type="text"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => {
+            setFirstName(e.target.value);
+          }}
+        />
+        <Input
+          type="text"
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => {
+            setLastName(e.target.value);
+          }}
+        />
+        <Input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
         <Button type="submit">Submit</Button>
       </Form>
     </Container>
