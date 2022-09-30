@@ -19,7 +19,6 @@ const HomePage = () => {
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
-
   return (
     <Container>
       <Header />
@@ -32,7 +31,7 @@ const HomePage = () => {
       />
       <Pagination
         usersPerPage={usersPerPage}
-        totalUsers={users.length}
+        totalUsers={users_data.length}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
       />
