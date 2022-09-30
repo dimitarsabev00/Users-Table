@@ -42,7 +42,12 @@ const HomePage = () => {
           onChange={search}
         />
       </div>
-      <Table users={currentUsers} setUsers={setUsers} />
+      <Table
+        users={currentUsers}
+        setUsers={setUsers}
+        users_data={users_data}
+        setSearchPhrase={setSearchPhrase}
+      />
       <Pagination
         usersPerPage={usersPerPage}
         totalUsers={users.length}
