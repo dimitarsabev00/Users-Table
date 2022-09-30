@@ -19,10 +19,11 @@ const Button = styled.button`
   background: transparent;
   border-color: #eee;
 `;
+const AppHeading = styled.h1``;
 const Header = () => {
   return (
     <Container>
-      <h1>Users Table</h1>
+      <AppHeading>Users Table</AppHeading>
 
       <Button>
         <Link
