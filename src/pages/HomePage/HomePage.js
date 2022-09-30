@@ -20,28 +20,10 @@ const HomePage = () => {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
-  const search = (e) => {
-    const matchedUser = users_data.filter((user) => {
-      return `${user.first_name} ${user.last_name} ${user.id} ${user.email}`
-        .toLowerCase()
-        .includes(e.target.value.toLowerCase());
-    });
-
-    setUsers(matchedUser);
-    setSearchPhrase(e.target.value);
-  };
-
   return (
     <Container>
       <Header />
-      <div>
-        <input
-          type="text"
-          placeholder="Search.."
-          value={searchPhrase}
-          onChange={search}
-        />
-      </div>
+
       <Table
         users={currentUsers}
         setUsers={setUsers}

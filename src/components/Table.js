@@ -72,6 +72,26 @@ const Table = ({ users, setUsers, users_data, setSearchPhrase }) => {
     setUsers(matchedUser);
     setSearchPhrase(e.target.value);
   };
+  const filterByLastName = (e) => {
+    const matchedUser = users_data.filter((user) => {
+      return `${user.last_name} `
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
+
+    setUsers(matchedUser);
+    setSearchPhrase(e.target.value);
+  };
+  const filterByEmail = (e) => {
+    const matchedUser = users_data.filter((user) => {
+      return `${user.email} `
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
+
+    setUsers(matchedUser);
+    setSearchPhrase(e.target.value);
+  };
   return (
     <TableContainer>
       <thead>
@@ -87,12 +107,14 @@ const Table = ({ users, setUsers, users_data, setSearchPhrase }) => {
             <input
               placeholder="Filter By Last Name"
               style={{ width: "100%" }}
+              onChange={filterByLastName}
             ></input>
           </td>
           <td style={{ border: "none" }}>
             <input
               placeholder="Filter By Email"
               style={{ width: "100%" }}
+              onChange={filterByEmail}
             ></input>
           </td>
         </tr>
