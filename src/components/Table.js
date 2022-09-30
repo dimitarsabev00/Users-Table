@@ -9,19 +9,11 @@ const TableContainer = styled.table`
 const Span = styled.span`
   margin-right: 0.5rem;
 `;
-const Table = ({ users, setUsers }) => {
-  const [sorted, setSorted] = useState({ sorted: "id", reversed: "false" });
-  const sortedByID = () => {
-    setSorted({ sorted: "id", reversed: !sorted.reversed });
-    const usersCopy = [...users];
-    usersCopy.sort((userA, userB) => {
-      if (sorted.reversed) {
-        return userA.id - userB.id;
-      }
-      return userB.id - userA.id;
-    });
-    setUsers(usersCopy);
-  };
+const Table = ({ users, setUsers, users_data, setSearchPhrase }) => {
+  const [sorted, setSorted] = useState({
+    sorted: "first_name",
+    reversed: "false",
+  });
 
   const sortByFirstName = () => {
     const usersCopy = [...users];
@@ -70,18 +62,25 @@ const Table = ({ users, setUsers }) => {
     }
     return <FaArrowDown />;
   };
+  const filterByFirstName = (e) => {
+    const matchedUser = users_data.filter((user) => {
+      return `${user.first_name} `
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
 
+    setUsers(matchedUser);
+    setSearchPhrase(e.target.value);
+  };
   return (
     <TableContainer>
       <thead>
         <tr>
           <td style={{ border: "none" }}>
-            <input placeholder="Filter By ID" style={{ width: "100%" }}></input>
-          </td>
-          <td style={{ border: "none" }}>
             <input
               placeholder="Filter By First Name"
               style={{ width: "100%" }}
+              onChange={filterByFirstName}
             ></input>
           </td>
           <td style={{ border: "none" }}>
@@ -98,11 +97,6 @@ const Table = ({ users, setUsers }) => {
           </td>
         </tr>
         <tr>
-          <td onClick={sortedByID}>
-            <Span>ID</Span>
-
-            {sorted.sorted === "id" ? renderArrow() : null}
-          </td>
           <td onClick={sortByFirstName}>
             <Span>First Name</Span>
 
@@ -118,6 +112,7 @@ const Table = ({ users, setUsers }) => {
 
             {sorted.sorted === "email" ? renderArrow() : null}
           </td>
+
           <td>Actions</td>
         </tr>
       </thead>
@@ -125,12 +120,11 @@ const Table = ({ users, setUsers }) => {
         {users.map((user) => {
           return (
             <tr key={user.id}>
-              <td>{user.id}</td>
-
               <td>{user.first_name}</td>
               <td>{user.last_name}</td>
 
               <td>{user.email}</td>
+
               <td
                 style={{
                   display: "flex",
