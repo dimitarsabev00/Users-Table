@@ -1,6 +1,25 @@
 import styled from "@emotion/styled";
 import React from "react";
 import "./Pagination.css";
+const PaginationContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1rem;
+`;
+const Button = styled.button`
+  width: 40px;
+  height: 40px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  border-color: #eee;
+`;
 const Pagination = ({
   usersPerPage,
   totalUsers,
@@ -12,28 +31,8 @@ const Pagination = ({
     pageNumbers.push(i);
   }
 
-  const Pagination = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 1rem;
-  `;
-
-  const Button = styled.button`
-    width: 40px;
-    height: 40px;
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 16px;
-    margin: 0 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: transparent;
-    border-color: #eee;
-  `;
   return (
-    <Pagination>
+    <PaginationContainer>
       {pageNumbers.map((number, index) => (
         <Button
           className={number == currentPage ? "active" : ""}
@@ -45,7 +44,7 @@ const Pagination = ({
           {number}
         </Button>
       ))}
-    </Pagination>
+    </PaginationContainer>
   );
 };
 

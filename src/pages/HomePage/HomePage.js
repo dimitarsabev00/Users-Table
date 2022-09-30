@@ -5,6 +5,12 @@ import users_data from "../../data/users_data.json";
 import Table from "../../components/Table";
 import Pagination from "../../components/Pagination";
 import Header from "../../components/Header";
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 70%;
+`;
 const HomePage = () => {
   const [users, setUsers] = useState(users_data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,23 +32,16 @@ const HomePage = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        margin: "0 auto",
-        width: "70%",
-      }}
-    >
+    <Container>
       <Header />
-      {/* <div>
+      <div>
         <input
           type="text"
           placeholder="Search.."
           value={searchPhrase}
           onChange={search}
         />
-      </div> */}
+      </div>
       <Table users={currentUsers} setUsers={setUsers} />
       <Pagination
         usersPerPage={usersPerPage}
@@ -50,7 +49,7 @@ const HomePage = () => {
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
       />
-    </div>
+    </Container>
   );
 };
 

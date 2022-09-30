@@ -1,6 +1,14 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+const TableContainer = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+  margin: 2rem 0;
+`;
+const Span = styled.span`
+  margin-right: 0.5rem;
+`;
 const Table = ({ users, setUsers }) => {
   const [sorted, setSorted] = useState({ sorted: "id", reversed: "false" });
   const sortedByID = () => {
@@ -62,16 +70,9 @@ const Table = ({ users, setUsers }) => {
     }
     return <FaArrowDown />;
   };
-  const Table = styled.table`
-    border-collapse: collapse;
-    width: 100%;
-    margin: 2rem 0;
-  `;
-  const Span = styled.span`
-    margin-right: 0.5rem;
-  `;
+
   return (
-    <Table>
+    <TableContainer>
       <thead>
         <tr>
           <td style={{ border: "none" }}>
@@ -144,7 +145,7 @@ const Table = ({ users, setUsers }) => {
           );
         })}
       </tbody>
-    </Table>
+    </TableContainer>
   );
 };
 
