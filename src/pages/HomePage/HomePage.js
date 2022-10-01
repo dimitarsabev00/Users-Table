@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./HomePage.css";
 import styled from "@emotion/styled";
-import users_data from "../../data/users_data.json";
 import Table from "../../components/Table";
 import Pagination from "../../components/Pagination";
 import Header from "../../components/Header";
@@ -16,7 +15,7 @@ const Container = styled.div`
 `;
 const HomePage = () => {
   const [firebaseUsers, setFirebaseUsers] = useState([]);
-  const [users, setUsers] = useState(users_data);
+  const [users, setUsers] = useState(firebaseUsers);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(10);
   const [searchPhrase, setSearchPhrase] = useState("");
@@ -39,14 +38,14 @@ const HomePage = () => {
       <Header />
 
       <Table
-        users={currentUsers}
+        users={firebaseUsers}
         setUsers={setUsers}
-        users_data={users_data}
+        users_data={firebaseUsers}
         setSearchPhrase={setSearchPhrase}
       />
       <Pagination
         usersPerPage={usersPerPage}
-        totalUsers={users_data.length}
+        totalUsers={firebaseUsers.length}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
       />

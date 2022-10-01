@@ -55,9 +55,10 @@ const CreateUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await addDoc(usersCollectionRef, {
-      firstName,
-      lastName,
+      first_name: firstName,
+      last_name: lastName,
       email,
+      roles: "user",
       status: "active",
     });
     navigate("/");
