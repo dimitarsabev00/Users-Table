@@ -32,7 +32,7 @@ const HomePage = () => {
   useEffect(() => {
     const getUsers = async () => {
       const data = await getDocs(usersCollectionRef);
-      setFirebaseUsers(data.docs.map((doc) => ({ ...doc.data() })));
+      setFirebaseUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getUsers();
   }, []);
