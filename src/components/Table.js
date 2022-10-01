@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { db } from "../configs/firebase";
 const TableContainer = styled.table`
   border-collapse: collapse;
   width: 100%;
@@ -9,40 +11,64 @@ const TableContainer = styled.table`
 const Span = styled.span`
   margin-right: 0.5rem;
 `;
-const Table = ({ users, setUsers, users_data, setSearchPhrase }) => {
+const Table = ({ users, setUsers }) => {
+  const [data, setData] = useState([]);
   const [sorted, setSorted] = useState({
-    sorted: "first_name",
+    sorted: "firstName",
     reversed: "false",
   });
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const usersCollectionRef = collection(db, "users");
 
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(usersCollectionRef);
+      setData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getUsers();
+  }, []);
   const sortByFirstName = () => {
+    setSorted({
+      sorted: "firstName",
+      reversed: !sorted.reversed,
+    });
+
     const usersCopy = [...users];
     usersCopy.sort((userA, userB) => {
-      const firstNameA = `${userA.first_name}`;
-      const firstNameB = `${userB.first_name}`;
+      const firstNameA = `${userA.firstName}`;
+      const firstNameB = `${userB.firstName}`;
       if (sorted.reversed) {
         return firstNameB.localeCompare(firstNameA);
       }
       return firstNameA.localeCompare(firstNameB);
     });
     setUsers(usersCopy);
-    setSorted({ sorted: "first_name", reversed: !sorted.reversed });
   };
 
   const sortByLastName = () => {
+    setSorted({
+      sorted: "lastName",
+      reversed: !sorted.reversed,
+    });
+
     const usersCopy = [...users];
     usersCopy.sort((userA, userB) => {
-      const lastNameA = `${userA.first_name}`;
-      const lastNameB = `${userB.first_name}`;
+      const lastNameA = `${userA.lastName}`;
+      const lastNameB = `${userB.lastName}`;
       if (sorted.reversed) {
         return lastNameB.localeCompare(lastNameA);
       }
       return lastNameA.localeCompare(lastNameB);
     });
     setUsers(usersCopy);
-    setSorted({ sorted: "last_name", reversed: !sorted.reversed });
   };
+
   const sortByEmail = () => {
+    setSorted({
+      sorted: "email",
+      reversed: !sorted.reversed,
+    });
+
     const usersCopy = [...users];
     usersCopy.sort((userA, userB) => {
       const emailA = `${userA.email}`;
@@ -53,44 +79,43 @@ const Table = ({ users, setUsers, users_data, setSearchPhrase }) => {
       return emailA.localeCompare(emailB);
     });
     setUsers(usersCopy);
-    setSorted({ sorted: "email", reversed: !sorted.reversed });
   };
-
   const renderArrow = () => {
     if (sorted.reversed) {
       return <FaArrowUp />;
     }
     return <FaArrowDown />;
   };
-  const filterByFirstName = (e) => {
-    const matchedUser = users_data.filter((user) => {
-      return `${user.first_name} `
+
+  const filterByFirstName = (event) => {
+    const matched = data.filter((user) => {
+      return `${user.firstName}`
         .toLowerCase()
-        .includes(e.target.value.toLowerCase());
+        .includes(event.target.value.toLowerCase());
     });
 
-    setUsers(matchedUser);
-    setSearchPhrase(e.target.value);
+    setUsers(matched);
+    setSearchPhrase(event.target.value);
   };
-  const filterByLastName = (e) => {
-    const matchedUser = users_data.filter((user) => {
-      return `${user.last_name} `
+  const filterByLastName = (event) => {
+    const matched = data.filter((user) => {
+      return `${user.lastName}`
         .toLowerCase()
-        .includes(e.target.value.toLowerCase());
+        .includes(event.target.value.toLowerCase());
     });
 
-    setUsers(matchedUser);
-    setSearchPhrase(e.target.value);
+    setUsers(matched);
+    setSearchPhrase(event.target.value);
   };
-  const filterByEmail = (e) => {
-    const matchedUser = users_data.filter((user) => {
-      return `${user.email} `
+  const filterByEmail = (event) => {
+    const matched = data.filter((user) => {
+      return `${user.email}`
         .toLowerCase()
-        .includes(e.target.value.toLowerCase());
+        .includes(event.target.value.toLowerCase());
     });
 
-    setUsers(matchedUser);
-    setSearchPhrase(e.target.value);
+    setUsers(matched);
+    setSearchPhrase(event.target.value);
   };
   return (
     <TableContainer>
@@ -121,17 +146,14 @@ const Table = ({ users, setUsers, users_data, setSearchPhrase }) => {
         <tr>
           <td onClick={sortByFirstName}>
             <Span>First Name</Span>
-
-            {sorted.sorted === "first_name" ? renderArrow() : null}
+            {sorted.sorted === "firstName" ? renderArrow() : null}
           </td>
           <td onClick={sortByLastName}>
             <Span>Last Name</Span>
-
-            {sorted.sorted === "last_name" ? renderArrow() : null}
+            {sorted.sorted === "lastName" ? renderArrow() : null}
           </td>
           <td onClick={sortByEmail}>
             <Span>Email</Span>
-
             {sorted.sorted === "email" ? renderArrow() : null}
           </td>
 
@@ -142,8 +164,9 @@ const Table = ({ users, setUsers, users_data, setSearchPhrase }) => {
         {users.map((user) => {
           return (
             <tr key={user.id}>
-              <td>{user.first_name}</td>
-              <td>{user.last_name}</td>
+              <td>{user.firstName}</td>
+
+              <td>{user.lastName}</td>
 
               <td>{user.email}</td>
 
