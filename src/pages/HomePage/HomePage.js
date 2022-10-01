@@ -19,11 +19,9 @@ const override = {
   margin: "0 auto",
 };
 const HomePage = () => {
-  const [firebaseUsers, setFirebaseUsers] = useState([]);
-  const [users, setUsers] = useState(firebaseUsers);
+  const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(10);
-  const [searchPhrase, setSearchPhrase] = useState("");
   const usersCollectionRef = collection(db, "users");
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -32,29 +30,26 @@ const HomePage = () => {
   useEffect(() => {
     const getUsers = async () => {
       const data = await getDocs(usersCollectionRef);
-      setFirebaseUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getUsers();
   }, []);
 
-  console.log(firebaseUsers);
+  console.log(users);
   return (
     <Container>
       <Header />
-      {firebaseUsers.length === 0 ? (
+
+      {users.length === 0 ? (
         <ClipLoader size={100} cssOverride={override} />
       ) : (
-        <Table
-          users={firebaseUsers}
-          setUsers={setUsers}
-          users_data={firebaseUsers}
-          setSearchPhrase={setSearchPhrase}
-        />
+        <Table users={users} setUsers={setUsers} users_data={users} />
       )}
 
+      {/* <Table users={users} setUsers={setUsers} users_data={users} /> */}
       <Pagination
         usersPerPage={usersPerPage}
-        totalUsers={firebaseUsers.length}
+        totalUsers={users.length}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
       />
