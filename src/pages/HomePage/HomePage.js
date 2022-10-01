@@ -29,11 +29,11 @@ const HomePage = () => {
     const getUsers = async () => {
       const data = await getDocs(usersCollectionRef);
       setFirebaseUsers(data.docs.map((doc) => ({ ...doc.data() })));
-      console.log(firebaseUsers);
     };
     getUsers();
   }, []);
 
+  console.log(firebaseUsers);
   return (
     <Container>
       <Header />
