@@ -6,6 +6,7 @@ import Pagination from "../../components/Pagination";
 import Header from "../../components/Header";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../configs/firebase";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Container = styled.div`
   display: flex;
@@ -13,6 +14,10 @@ const Container = styled.div`
   margin: 0 auto;
   width: 70%;
 `;
+
+const override = {
+  margin: "0 auto",
+};
 const HomePage = () => {
   const [firebaseUsers, setFirebaseUsers] = useState([]);
   const [users, setUsers] = useState(firebaseUsers);
@@ -36,13 +41,17 @@ const HomePage = () => {
   return (
     <Container>
       <Header />
+      {firebaseUsers.length === 0 ? (
+        <ClipLoader size={100} cssOverride={override} />
+      ) : (
+        <Table
+          users={firebaseUsers}
+          setUsers={setUsers}
+          users_data={firebaseUsers}
+          setSearchPhrase={setSearchPhrase}
+        />
+      )}
 
-      <Table
-        users={firebaseUsers}
-        setUsers={setUsers}
-        users_data={firebaseUsers}
-        setSearchPhrase={setSearchPhrase}
-      />
       <Pagination
         usersPerPage={usersPerPage}
         totalUsers={firebaseUsers.length}
