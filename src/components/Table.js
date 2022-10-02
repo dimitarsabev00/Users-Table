@@ -29,6 +29,8 @@ const Table = ({ users, setUsers }) => {
     firstName: "",
     lastName: "",
     email: "",
+    roles: "",
+    status: "",
   });
   const [editUserID, setEditUserID] = useState(null);
   const [searchPhrase, setSearchPhrase] = useState("");
@@ -60,6 +62,8 @@ const Table = ({ users, setUsers }) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      roles: user.roles,
+      status: user.status,
     };
 
     setEditFormData(formValues);
@@ -72,6 +76,8 @@ const Table = ({ users, setUsers }) => {
       firstName: editFormData.firstName,
       lastName: editFormData.lastName,
       email: editFormData.email,
+      roles: editFormData.roles,
+      status: editFormData.status,
     };
 
     const newUsers = [...users];

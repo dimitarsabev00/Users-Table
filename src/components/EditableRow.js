@@ -39,8 +39,29 @@ const EditableRow = ({
           onChange={handleEditFormChange}
         />
       </td>
-      <td>{user.roles}</td>
-      <td>{user.status}</td>
+      <td>
+        <select
+          required="required"
+          name="roles"
+          value={editFormData.roles}
+          onChange={handleEditFormChange}
+        >
+          <option>Admin</option>
+          <option>Customer</option>
+          <option>Support</option>
+        </select>
+      </td>
+      <td>
+        <select
+          required="required"
+          name="status"
+          value={editFormData.status}
+          onChange={handleEditFormChange}
+        >
+          <option>Active</option>
+          <option>Not Active</option>
+        </select>
+      </td>
       <td
         style={{
           display: "flex",
