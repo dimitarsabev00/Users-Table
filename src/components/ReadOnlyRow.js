@@ -8,8 +8,8 @@ const ReadOnlyRow = ({ user, handleEditClick, handleDeleteClick }) => {
       <td>{user.lastName}</td>
 
       <td>{user.email}</td>
-      <td>user</td>
-      <td>active</td>
+      <td>{user.roles}</td>
+      <td>{user.status}</td>
       <td
         style={{
           display: "flex",

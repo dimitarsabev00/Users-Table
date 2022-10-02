@@ -240,6 +240,7 @@ const Table = ({ users, setUsers }) => {
           <>
             {editUserID === user.id ? (
               <EditableRow
+                user={user}
                 editFormData={editFormData}
                 handleEditFormChange={handleEditFormChange}
                 handleEditFormSubmit={handleEditFormSubmit}

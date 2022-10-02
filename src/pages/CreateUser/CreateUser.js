@@ -28,6 +28,17 @@ const Input = styled.input`
   margin-bottom: 22px;
   transition: 0.3s;
 `;
+const Select = styled.select`
+  border: 2px solid rgba(0, 0, 0, 0);
+  border-radius: 10px;
+  outline: none;
+  background-color: rgba(230, 230, 230, 0.6);
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  margin-bottom: 22px;
+  transition: 0.3s;
+  width: 100%;
+`;
 
 const Button = styled.button`
   width: 100%;
@@ -50,6 +61,9 @@ const CreateUser = () => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [selectRole, setSelectRole] = useState();
+  const [selectStatus, setSelectStatus] = useState();
+
   const usersCollectionRef = collection(db, "users");
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -58,8 +72,8 @@ const CreateUser = () => {
       firstName,
       lastName,
       email,
-      roles: "user",
-      status: "active",
+      roles: selectRole,
+      status: selectStatus,
     });
     navigate("/");
   };
@@ -92,6 +106,28 @@ const CreateUser = () => {
             setEmail(e.target.value);
           }}
         />
+
+        <Select
+          value={selectRole}
+          onChange={(e) => {
+            setSelectRole(e.target.value);
+          }}
+        >
+          <option>Select Role</option>
+          <option>Admin</option>
+          <option>Customer</option>
+          <option>Support</option>
+        </Select>
+        <Select
+          value={selectStatus}
+          onChange={(e) => {
+            setSelectStatus(e.target.value);
+          }}
+        >
+          <option>Select Status</option>
+          <option>Active</option>
+          <option>Not Active</option>
+        </Select>
         <Button type="submit">Submit</Button>
       </Form>
     </Container>

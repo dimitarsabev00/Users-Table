@@ -1,6 +1,7 @@
 import React from "react";
 
 const EditableRow = ({
+  user,
   editFormData,
   handleEditFormChange,
   handleEditFormSubmit,
@@ -38,8 +39,8 @@ const EditableRow = ({
           onChange={handleEditFormChange}
         />
       </td>
-      <td>user</td>
-      <td>active</td>
+      <td>{user.roles}</td>
+      <td>{user.status}</td>
       <td
         style={{
           display: "flex",
