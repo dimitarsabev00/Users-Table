@@ -1,8 +1,10 @@
 import styled from "@emotion/styled";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { db } from "../configs/firebase";
+import EditableRow from "./EditableRow";
+import ReadOnlyRow from "./ReadOnlyRow";
 const TableContainer = styled.table`
   border-collapse: collapse;
   width: 100%;
@@ -17,6 +19,12 @@ const Table = ({ users, setUsers }) => {
     sorted: "firstName",
     reversed: "false",
   });
+  const [editFormData, setEditFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+  const [editUserID, setEditUserID] = useState(null);
   const [searchPhrase, setSearchPhrase] = useState("");
   const usersCollectionRef = collection(db, "users");
 
@@ -27,6 +35,62 @@ const Table = ({ users, setUsers }) => {
     };
     getUsers();
   }, []);
+
+  const handleEditFormChange = (event) => {
+    event.preventDefault();
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newFormData = { ...editFormData };
+    newFormData[fieldName] = fieldValue;
+
+    setEditFormData(newFormData);
+  };
+  const handleEditClick = (event, user) => {
+    event.preventDefault();
+    setEditUserID(user.id);
+    const formValues = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    };
+
+    setEditFormData(formValues);
+  };
+
+  const handleEditFormSubmit = (event) => {
+    event.preventDefault();
+    const editedUsers = {
+      id: editUserID,
+      firstName: editFormData.firstName,
+      lastName: editFormData.lastName,
+      email: editFormData.email,
+    };
+
+    const newUsers = [...users];
+
+    const index = users.findIndex((user) => user.id === editUserID);
+
+    newUsers[index] = editedUsers;
+    setUsers(newUsers);
+    setEditUserID(null);
+  };
+  const handleCancelClick = () => {
+    setEditUserID(null);
+  };
+
+  const handleDeleteClick = async (userID) => {
+    const newUsers = [...users];
+    const index = users.findIndex((user) => user.id === userID);
+    newUsers.splice(index, 1);
+    setUsers(newUsers);
+    try {
+      const userDoc = doc(db, "users", userID);
+      await deleteDoc(userDoc);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const sortByFirstName = () => {
     setSorted({
       sorted: "firstName",
@@ -117,6 +181,7 @@ const Table = ({ users, setUsers }) => {
     setUsers(matched);
     setSearchPhrase(event.target.value);
   };
+
   return (
     <TableContainer>
       <thead>
@@ -161,28 +226,24 @@ const Table = ({ users, setUsers }) => {
         </tr>
       </thead>
       <tbody>
-        {users.map((user) => {
-          return (
-            <tr key={user.id}>
-              <td>{user.firstName}</td>
-
-              <td>{user.lastName}</td>
-
-              <td>{user.email}</td>
-
-              <td
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  justifyContent: "center",
-                }}
-              >
-                <button>Edit</button>
-                <button>Delete</button>
-              </td>
-            </tr>
-          );
-        })}
+        {users.map((user) => (
+          <>
+            {editUserID === user.id ? (
+              <EditableRow
+                editFormData={editFormData}
+                handleEditFormChange={handleEditFormChange}
+                handleEditFormSubmit={handleEditFormSubmit}
+                handleCancelClick={handleCancelClick}
+              />
+            ) : (
+              <ReadOnlyRow
+                user={user}
+                handleDeleteClick={handleDeleteClick}
+                handleEditClick={handleEditClick}
+              />
+            )}
+          </>
+        ))}
       </tbody>
     </TableContainer>
   );
