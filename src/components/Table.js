@@ -52,24 +52,20 @@ const Table = ({ users, setUsers }) => {
 
     setEditFormData(newFormData);
   };
-  const handleEditClick = async (event, user) => {
-    try {
-      event.preventDefault();
+  const handleEditClick = (event, user) => {
+    event.preventDefault();
 
-      setEditUserID(user.id);
-      const formValues = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      };
-      await updateDoc(doc(db, "users", user.id), { ...formValues });
-      setEditFormData(formValues);
-    } catch (error) {
-      console.log(error);
-    }
+    setEditUserID(user.id);
+    const formValues = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    };
+
+    setEditFormData(formValues);
   };
 
-  const handleEditFormSubmit = (event) => {
+  const handleEditFormSubmit = async (event) => {
     event.preventDefault();
     const editedUsers = {
       id: editUserID,
@@ -85,6 +81,7 @@ const Table = ({ users, setUsers }) => {
     newUsers[index] = editedUsers;
     setUsers(newUsers);
     setEditUserID(null);
+    await updateDoc(doc(db, "users", editedUsers.id), { ...editedUsers });
   };
   const handleCancelClick = () => {
     setEditUserID(null);
