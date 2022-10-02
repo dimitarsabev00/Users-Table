@@ -46,7 +46,6 @@ const HomePage = () => {
         <Table users={users} setUsers={setUsers} users_data={users} />
       )}
 
-      {/* <Table users={users} setUsers={setUsers} users_data={users} /> */}
       <Pagination
         usersPerPage={usersPerPage}
         totalUsers={users.length}
