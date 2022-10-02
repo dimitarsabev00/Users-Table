@@ -38,7 +38,15 @@ const EditableRow = ({
           onChange={handleEditFormChange}
         />
       </td>
-      <td>
+      <td>user</td>
+      <td>active</td>
+      <td
+        style={{
+          display: "flex",
+          gap: "1rem",
+          justifyContent: "center",
+        }}
+      >
         <button onClick={handleEditFormSubmit}>Save</button>
         <button onClick={handleCancelClick}>Cancel</button>
       </td>

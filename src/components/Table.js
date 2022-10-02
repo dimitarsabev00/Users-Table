@@ -230,6 +230,8 @@ const Table = ({ users, setUsers }) => {
             {sorted.sorted === "email" ? renderArrow() : null}
           </td>
 
+          <td>Roles</td>
+          <td>Status</td>
           <td>Actions</td>
         </tr>
       </thead>
