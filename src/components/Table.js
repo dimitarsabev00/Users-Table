@@ -242,25 +242,29 @@ const Table = ({ users, setUsers }) => {
         </tr>
       </thead>
       <tbody>
-        {users.map((user) => (
-          <>
-            {editUserID === user.id ? (
-              <EditableRow
-                user={user}
-                editFormData={editFormData}
-                handleEditFormChange={handleEditFormChange}
-                handleEditFormSubmit={handleEditFormSubmit}
-                handleCancelClick={handleCancelClick}
-              />
-            ) : (
-              <ReadOnlyRow
-                user={user}
-                handleDeleteClick={handleDeleteClick}
-                handleEditClick={handleEditClick}
-              />
-            )}
-          </>
-        ))}
+        {users.length === 0 ? (
+          <h3>No Users Yet</h3>
+        ) : (
+          users.map((user) => (
+            <>
+              {editUserID === user.id ? (
+                <EditableRow
+                  user={user}
+                  editFormData={editFormData}
+                  handleEditFormChange={handleEditFormChange}
+                  handleEditFormSubmit={handleEditFormSubmit}
+                  handleCancelClick={handleCancelClick}
+                />
+              ) : (
+                <ReadOnlyRow
+                  user={user}
+                  handleDeleteClick={handleDeleteClick}
+                  handleEditClick={handleEditClick}
+                />
+              )}
+            </>
+          ))
+        )}
       </tbody>
     </TableContainer>
   );

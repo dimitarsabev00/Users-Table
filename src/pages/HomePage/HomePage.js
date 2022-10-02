@@ -19,6 +19,7 @@ const override = {
   margin: "0 auto",
 };
 const HomePage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(10);
@@ -31,6 +32,7 @@ const HomePage = () => {
     const getUsers = async () => {
       const data = await getDocs(usersCollectionRef);
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setIsLoading(false);
     };
     getUsers();
   }, []);
@@ -40,7 +42,7 @@ const HomePage = () => {
     <Container>
       <Header />
 
-      {users.length === 0 ? (
+      {isLoading ? (
         <ClipLoader size={100} cssOverride={override} />
       ) : (
         <Table users={users} setUsers={setUsers} users_data={users} />
