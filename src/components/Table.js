@@ -1,5 +1,11 @@
 import styled from "@emotion/styled";
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { db } from "../configs/firebase";
@@ -46,16 +52,21 @@ const Table = ({ users, setUsers }) => {
 
     setEditFormData(newFormData);
   };
-  const handleEditClick = (event, user) => {
-    event.preventDefault();
-    setEditUserID(user.id);
-    const formValues = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    };
+  const handleEditClick = async (event, user) => {
+    try {
+      event.preventDefault();
 
-    setEditFormData(formValues);
+      setEditUserID(user.id);
+      const formValues = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      };
+      await updateDoc(doc(db, "users", user.id), { ...formValues });
+      setEditFormData(formValues);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEditFormSubmit = (event) => {
