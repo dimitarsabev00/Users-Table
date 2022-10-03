@@ -1,14 +1,9 @@
 import styled from "@emotion/styled";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { db } from "../configs/firebase";
+import { useContextApp } from "../context/AppContextProvider";
 import EditableRow from "./EditableRow";
 import ReadOnlyRow from "./ReadOnlyRow";
 const TableContainer = styled.table`
@@ -19,8 +14,9 @@ const TableContainer = styled.table`
 const Span = styled.span`
   margin-right: 0.5rem;
 `;
-const Table = ({ users, setUsers }) => {
-  const [data, setData] = useState([]);
+const Table = ({ currentUsers }) => {
+  const { setUsers, readDataDB } = useContextApp();
+
   const [sorted, setSorted] = useState({
     sorted: "firstName",
     reversed: "false",
@@ -34,15 +30,6 @@ const Table = ({ users, setUsers }) => {
   });
   const [editUserID, setEditUserID] = useState(null);
   const [searchPhrase, setSearchPhrase] = useState("");
-  const usersCollectionRef = collection(db, "users");
-
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(usersCollectionRef);
-      setData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    getUsers();
-  }, []);
 
   const handleEditFormChange = (event) => {
     event.preventDefault();
@@ -80,9 +67,9 @@ const Table = ({ users, setUsers }) => {
       status: editFormData.status,
     };
 
-    const newUsers = [...users];
+    const newUsers = [...currentUsers];
 
-    const index = users.findIndex((user) => user.id === editUserID);
+    const index = currentUsers.findIndex((user) => user.id === editUserID);
 
     newUsers[index] = editedUsers;
     setUsers(newUsers);
@@ -94,8 +81,8 @@ const Table = ({ users, setUsers }) => {
   };
 
   const handleDeleteClick = async (userID) => {
-    const newUsers = [...users];
-    const index = users.findIndex((user) => user.id === userID);
+    const newUsers = [...currentUsers];
+    const index = currentUsers.findIndex((user) => user.id === userID);
     newUsers.splice(index, 1);
     setUsers(newUsers);
     try {
@@ -111,7 +98,7 @@ const Table = ({ users, setUsers }) => {
       reversed: !sorted.reversed,
     });
 
-    const usersCopy = [...users];
+    const usersCopy = [...currentUsers];
     usersCopy.sort((userA, userB) => {
       const firstNameA = `${userA.firstName}`;
       const firstNameB = `${userB.firstName}`;
@@ -129,7 +116,7 @@ const Table = ({ users, setUsers }) => {
       reversed: !sorted.reversed,
     });
 
-    const usersCopy = [...users];
+    const usersCopy = [...currentUsers];
     usersCopy.sort((userA, userB) => {
       const lastNameA = `${userA.lastName}`;
       const lastNameB = `${userB.lastName}`;
@@ -147,7 +134,7 @@ const Table = ({ users, setUsers }) => {
       reversed: !sorted.reversed,
     });
 
-    const usersCopy = [...users];
+    const usersCopy = [...currentUsers];
     usersCopy.sort((userA, userB) => {
       const emailA = `${userA.email}`;
       const emailB = `${userB.email}`;
@@ -166,7 +153,7 @@ const Table = ({ users, setUsers }) => {
   };
 
   const filterByFirstName = (event) => {
-    const matched = data.filter((user) => {
+    const matched = readDataDB.filter((user) => {
       return `${user.firstName}`
         .toLowerCase()
         .includes(event.target.value.toLowerCase());
@@ -176,7 +163,7 @@ const Table = ({ users, setUsers }) => {
     setSearchPhrase(event.target.value);
   };
   const filterByLastName = (event) => {
-    const matched = data.filter((user) => {
+    const matched = readDataDB.filter((user) => {
       return `${user.lastName}`
         .toLowerCase()
         .includes(event.target.value.toLowerCase());
@@ -186,7 +173,7 @@ const Table = ({ users, setUsers }) => {
     setSearchPhrase(event.target.value);
   };
   const filterByEmail = (event) => {
-    const matched = data.filter((user) => {
+    const matched = readDataDB.filter((user) => {
       return `${user.email}`
         .toLowerCase()
         .includes(event.target.value.toLowerCase());
@@ -242,10 +229,10 @@ const Table = ({ users, setUsers }) => {
         </tr>
       </thead>
       <tbody>
-        {users.length === 0 ? (
+        {currentUsers.length === 0 ? (
           <h3>No Users Yet</h3>
         ) : (
-          users.map((user) => (
+          currentUsers.map((user) => (
             <>
               {editUserID === user.id ? (
                 <EditableRow
