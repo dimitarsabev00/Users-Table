@@ -37,7 +37,6 @@ const HomePage = () => {
     getUsers();
   }, []);
 
-  console.log(users);
   return (
     <Container>
       <Header />
