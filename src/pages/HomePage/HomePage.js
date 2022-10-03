@@ -23,11 +23,12 @@ const HomePage = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(10);
-  const usersCollectionRef = collection(db, "users");
+
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
+  const usersCollectionRef = collection(db, "users");
   useEffect(() => {
     const getUsers = async () => {
       const data = await getDocs(usersCollectionRef);
@@ -44,7 +45,7 @@ const HomePage = () => {
       {isLoading ? (
         <ClipLoader size={100} cssOverride={override} />
       ) : (
-        <Table users={users} setUsers={setUsers} users_data={users} />
+        <Table users={currentUsers} setUsers={setUsers} users_data={users} />
       )}
 
       <Pagination
