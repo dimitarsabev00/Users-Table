@@ -8,7 +8,7 @@ const EditableRow = ({
   handleCancelClick,
 }) => {
   return (
-    <tr>
+    <tr key={user.id}>
       <td>
         <input
           type="text"

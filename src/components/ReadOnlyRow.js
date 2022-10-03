@@ -2,7 +2,7 @@ import React from "react";
 
 const ReadOnlyRow = ({ user, handleEditClick, handleDeleteClick }) => {
   return (
-    <tr>
+    <tr key={user.id}>
       <td>{user.firstName}</td>
 
       <td>{user.lastName}</td>
