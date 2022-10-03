@@ -1,6 +1,12 @@
 import styled from "@emotion/styled";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { db } from "../configs/firebase";
 import { useContextApp } from "../context/AppContextProvider";
@@ -15,7 +21,7 @@ const Span = styled.span`
   margin-right: 0.5rem;
 `;
 const Table = ({ currentUsers }) => {
-  const { setUsers, readDataDB } = useContextApp();
+  const { setUsers, readDataDB, setReadDataDB } = useContextApp();
 
   const [sorted, setSorted] = useState({
     sorted: "firstName",
@@ -30,7 +36,15 @@ const Table = ({ currentUsers }) => {
   });
   const [editUserID, setEditUserID] = useState(null);
   const [searchPhrase, setSearchPhrase] = useState("");
+  const usersCollectionRef = collection(db, "users");
 
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(usersCollectionRef);
+      setReadDataDB(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getUsers();
+  }, []);
   const handleEditFormChange = (event) => {
     event.preventDefault();
     const fieldName = event.target.getAttribute("name");

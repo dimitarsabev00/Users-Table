@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./HomePage.css";
 import styled from "@emotion/styled";
 import Table from "../../components/Table";
@@ -6,6 +6,8 @@ import Pagination from "../../components/Pagination";
 import Header from "../../components/Header";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useContextApp } from "../../context/AppContextProvider";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../configs/firebase";
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +20,7 @@ const override = {
   margin: "0 auto",
 };
 const HomePage = () => {
-  const { isLoading, users } = useContextApp();
+  const { isLoading, users, setUsers, setIsLoading } = useContextApp();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(10);
@@ -26,7 +28,16 @@ const HomePage = () => {
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  useEffect(() => {
+    const getUsers = async () => {
+      const usersCollectionRef = collection(db, "users");
 
+      const data = await getDocs(usersCollectionRef);
+      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setIsLoading(false);
+    };
+    getUsers();
+  }, []);
   return (
     <Container>
       <Header />
